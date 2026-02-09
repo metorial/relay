@@ -1,12 +1,14 @@
 import { apiMux } from '@lowerdeck/api-mux';
 import { createServer, rpcMux, type InferClient } from '@lowerdeck/rpc-server';
 import { app } from './_app';
+import { emailController } from './email';
 import { emailIdentityController } from './emailIdentity';
 import { senderController } from './sender';
 
 export let rootController = app.controller({
   emailIdentity: emailIdentityController,
-  sender: senderController
+  sender: senderController,
+  email: emailController
 });
 
 export let RelayRPC = createServer({})(rootController);

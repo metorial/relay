@@ -72,7 +72,7 @@ services:
     container_name: relay-service
     restart: unless-stopped
     ports:
-      - '25050:52050'
+      - '52110:52110'
     environment:
       DATABASE_URL: ${DATABASE_URL}
       REDIS_URL: ${REDIS_URL}
@@ -93,7 +93,7 @@ services:
       test:
         [
           'CMD-SHELL',
-          'bun -e "fetch(''http://localhost:52050/'').then(()=>process.exit(0)).catch(()=>process.exit(1))"'
+          'bun -e "fetch(''http://localhost:52110/'').then(()=>process.exit(0)).catch(()=>process.exit(1))"'
         ]
       interval: 5s
       timeout: 5s

@@ -4,7 +4,7 @@ import { db } from './db';
 
 let server = Bun.serve({
   fetch: RelayApi,
-  port: 52050
+  port: 52110
 });
 
 console.log(`Service running on http://localhost:${server.port}`);
