@@ -1,9 +1,9 @@
-import { SendEmailCommand, SESClient } from '@aws-sdk/client-ses';
+import { GetSendQuotaCommand, SendEmailCommand, SESClient } from '@aws-sdk/client-ses';
 import nodemailer from 'nodemailer';
 import type { EmailIdentity } from '../../prisma/generated/browser';
 import { env } from '../env';
 
-let transport = env.email.EMAIL_SES_ACCESS_KEY_ID
+let transport = env.email.EMAIL_SES_REGION
   ? {
       type: 'ses' as const,
       client: new SESClient(
@@ -15,7 +15,9 @@ let transport = env.email.EMAIL_SES_ACCESS_KEY_ID
                 secretAccessKey: env.email.EMAIL_SES_SECRET_ACCESS_KEY!
               }
             }
-          : {}
+          : {
+              region: env.email.EMAIL_SES_REGION
+            }
       )
     }
   : {
@@ -30,6 +32,13 @@ let transport = env.email.EMAIL_SES_ACCESS_KEY_ID
         }
       })
     };
+
+export let checkSesAccess = async () => {
+  if (transport.type !== 'ses') return;
+
+  await transport.client.send(new GetSendQuotaCommand({}));
+  console.log('SES access verified');
+};
 
 export let send = async (opts: {
   to: string;

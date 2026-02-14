@@ -1,6 +1,6 @@
 {
   "name": "@metorial-services/relay-client",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "publishConfig": {
     "access": "public"
   },
@@ -31,7 +31,7 @@
     "prepublish": "bun run build"
   },
   "dependencies": {
-    "@lowerdeck/rpc-client": "^1.0.2",
+    "@lowerdeck/rpc-client": "^1.0.5",
     "@react-email/components": "^1.0.7",
     "react": "^19.2.4"
   },

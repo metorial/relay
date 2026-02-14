@@ -10,6 +10,9 @@ async function main() {
   await import('./instrument');
   await import('./endpoints');
   await import('./worker');
+
+  let { checkSesAccess } = await import('./lib/send');
+  await checkSesAccess();
 }
 
 main().catch(err => {

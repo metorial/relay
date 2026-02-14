@@ -76,8 +76,6 @@ services:
     environment:
       DATABASE_URL: ${DATABASE_URL}
       REDIS_URL: ${REDIS_URL}
-      OBJECT_STORAGE_URL: ${OBJECT_STORAGE_URL}
-      LOGS_BUCKET_NAME: ${LOGS_BUCKET_NAME}
     volumes:
       - ./src:/app/service/src:ro
       - ./package.json:/app/service/package.json:ro
