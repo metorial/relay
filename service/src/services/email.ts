@@ -7,6 +7,29 @@ import { db } from '../db';
 import { get4ByteIntId, ID, snowflake } from '../id';
 import { sendEmailQueue } from '../queue/sendEmail';
 
+let normalizeTemplate = (template: any): any => {
+  if (
+    typeof template == 'string' ||
+    typeof template == 'number' ||
+    typeof template == 'boolean'
+  )
+    return template;
+  if (typeof template != 'object' || template === null) return undefined;
+
+  if (Array.isArray(template)) return template.map(normalizeTemplate);
+
+  let newObj: any = {};
+  for (let key in template) {
+    let value = template[key];
+    if (typeof value == 'string' || typeof value == 'number' || typeof value == 'boolean') {
+      newObj[key] = value;
+    } else {
+      newObj[key] = normalizeTemplate(value);
+    }
+  }
+  return newObj;
+};
+
 let getIdentity = createLocallyCachedFunction({
   getHash: (d: { sender: Sender; id: string }) => d.id + '-' + d.sender.oid,
   ttlSeconds: 60,
@@ -75,7 +98,7 @@ class EmailService {
         numberOfDestinations: d.to.length,
         numberOfDestinationsCompleted: 0,
 
-        values: d.template,
+        values: normalizeTemplate(d.template),
 
         subject: d.content.subject,
 
